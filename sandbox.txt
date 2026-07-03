@@ -1,0 +1,32 @@
+Flow:
+    User chooses game mode
+        computer vs user
+        user vs computer    (NOT YET)
+        user vs user        (NOT YET)
+        
+        ^
+*       computer vs user
+            User chooses parameters (SHARED)(NOT YET)
+*           Game start (SHARED)
+*               Computer chooses secret code.
+*               User plays game. (SHARED)
+*               Result (SHARED)
+        
+        user vs computer    (NOT YET)
+            User chooses parameters (SHARED)(NOT YET)
+            Game start (SHARED)
+                User chooses secret code (SHARED)
+                Computer plays game.
+                Result (SHARED)            
+
+        user vs user        (NOT YET)
+            User chooses parameters (SHARED)(NOT YET)
+            Game start (SHARED)
+                User chooses secret code (SHARED)
+                User plays game. (SHARED)
+                Result (SHARED)
+
+        computer vs computer
+            ...
+
+        
