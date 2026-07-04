@@ -4,6 +4,8 @@
 module Mastermind
   # A round includes a code breakers guess.
   class Round
+    attr_reader :guess
+
     def initialize(code_options, code_length)
       @code_options = code_options
       @valid_options = Array.new(code_options)
@@ -12,14 +14,12 @@ module Mastermind
       end
       @code_length = code_length
       @guess = Array.new(code_length)
-      puts 'another round'
     end
 
     def prompt_code_breaker
-      puts 'Guess number ..., '
       print '['
       @guess.each_with_index do |_key, index1|
-        @guess[index1] = get_valid_input(@code_options)
+        @guess[index1] = get_valid_input
         break if index1 >= @code_length - 1
 
         print "\n["
@@ -35,13 +35,13 @@ module Mastermind
       p @guess
     end
 
-    def get_valid_input(code_options)
+    def get_valid_input
       loop do
         user_input = IO.console.getch.to_i
 
         break user_input if valid_input?(user_input)
 
-        puts 'INVALID INPUT'
+        puts "\n\tInvalid input, try an integer from 1 to #{@code_options}."
       end
     end
 

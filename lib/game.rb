@@ -12,6 +12,8 @@ module Mastermind
       @code_length = parameters[1]
       @max_guesses = parameters[2]
       @game_status = 'playing'
+      @win_status = 'lose'
+      @current_round = 1
     end
 
     def play
@@ -22,23 +24,19 @@ module Mastermind
 
       # initialize secret code
       board.secret_code = generate_secret_computer_code(@code_options, @code_length)
-
+      @secret_code = board.secret_code
       # loop for each guessing round
       identify_game_parameters
       until game_over?
+        puts "\nRound #{@current_round}"
         round = Round.new(@code_options, @code_length)
         round.prompt_code_breaker
-        # ##play a round
-        ### TO DO
-
-        # temp code until I add rounds...
-        puts 'enless loop! Do you want out?'
-        input = gets.chomp
-        @game_status = 'finished' if input.downcase == 'yes'
+        check_answer(round.guess)
+        # ##give hint
+        increment_round
       end
       # end of game formalities
-      ### TO DO
-      puts 'Game over I guess.'
+      end_of_game_formalities
     end
 
     def identify_game_parameters
@@ -54,13 +52,44 @@ module Mastermind
       true
     end
 
+    def increment_round
+      @current_round += 1
+
+      return unless @current_round >= @max_guesses
+
+      @game_status = 'finished'
+    end
+
+    def check_answer(guess)
+      puts "\nguess: \n"
+      p guess
+      puts "\ncode: \n"
+      p @secret_code
+      return false unless guess == @secret_code
+
+      @win_status = 'win'
+      @game_status = 'finished'
+      true
+    end
+
     def generate_secret_computer_code(code_options, code_length)
       secret_code = Array.new(code_length)
       secret_code.each_with_index do |_num, index|
         secret_code[index] = rand(1..code_options)
       end
       puts 'The computer generated a secret code...'
+      p secret_code
       secret_code
+    end
+
+    def end_of_game_formalities
+      puts "\n\nGame over I guess."
+      if @win_status == 'win'
+        puts 'You Win!!!'
+        puts "You found the secret code in round #{@current_round}."
+      else
+        puts 'looooser'
+      end
     end
   end
 end
