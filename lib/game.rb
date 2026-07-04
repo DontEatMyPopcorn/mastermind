@@ -32,9 +32,9 @@ module Mastermind
         round = Round.new(@code_options, @code_length)
         round.prompt_code_breaker
         check_answer(round.guess)
-        board.save_guess(@current_round, round.guess)
+        hint = evaluate_guess(round.guess)
+        board.save_guess(@current_round, round.guess, hint)
         display_board(board)
-        # ##give hint
         increment_round
       end
       # end of game formalities
@@ -66,7 +66,7 @@ module Mastermind
       puts "\nguess: \n"
       p guess
       puts "\ncode: \n"
-      p @secret_code
+      p @secret_cod0e
       return false unless guess == @secret_code
 
       @win_status = 'win'
@@ -80,24 +80,52 @@ module Mastermind
         secret_code[index] = rand(1..code_options)
       end
       puts 'The computer generated a secret code...'
-      p secret_code
       secret_code
     end
 
     def end_of_game_formalities
-      puts "\n\nGame over I guess."
+      puts "\n\nGame over..."
       if @win_status == 'win'
         puts 'You Win!!!'
-        puts "You found the secret code in round #{@current_round}."
+        puts "You found the secret code in round #{@current_round - 1}."
       else
-        puts 'looooser'
+        puts 'You Lose!'
+        puts 'You took too long. Better luck next time.'
       end
     end
 
     def display_board(board)
-      board.guesses.each_with_index do |round, index|
-        puts "Round: #{board.guesses[index][0]}\tGuess: #{board.guesses[index][1]}\tHint: #{board.guesses[index][2]}"
+      board.guesses.each_with_index do |_round, index|
+        puts "Round: #{board.guesses[index][0]}\tGuess: #{board.guesses[index][1]}\t\tHint: #{board.guesses[index][2]}"
       end
+    end
+
+    def evaluate_guess(guess)
+      # ##compare Guess to the secret code...
+      temp_code = @secret_code.dup
+      temp_guess = guess.dup
+      correct = 0
+      close = 0
+      temp_guess.each_with_index do |key, index|
+        next unless temp_code[index] == key
+
+        correct += 1
+        temp_code[index] = nil
+        temp_guess[index] = nil
+      end
+      temp_guess.each_with_index do |key1, index1|
+        temp_code.each_with_index do |key2, index2|
+          if !key1.nil? && (key2 == key1)
+            close += 1
+            temp_code[index2] = nil
+          end
+        end
+      end
+      p "temp code: #{temp_code}"
+      p "secret code: #{@secret_code}"
+      p "temp guess: #{temp_guess}"
+      ###
+      hint = "#{correct} correct, #{close} in the wrong position"
     end
   end
 end

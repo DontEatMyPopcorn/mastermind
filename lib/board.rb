@@ -13,8 +13,8 @@ module Mastermind
       @guesses = []
     end
 
-    def save_guess(round, guess)
-      @guesses.push([round, guess, nil])
+    def save_guess(round, guess, hint)
+      @guesses.push([round, guess, hint])
     end
   end
 end
