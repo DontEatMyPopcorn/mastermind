@@ -33,7 +33,8 @@ module Mastermind
       end
       puts "\nGuess:"
       p @guess
-      sleep 2
+      puts "\n"
+      sleep 1
     end
 
     def get_valid_input

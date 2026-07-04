@@ -63,10 +63,6 @@ module Mastermind
     end
 
     def check_answer(guess)
-      puts "\nguess: \n"
-      p guess
-      puts "\ncode: \n"
-      p @secret_cod0e
       return false unless guess == @secret_code
 
       @win_status = 'win'
@@ -85,6 +81,11 @@ module Mastermind
 
     def end_of_game_formalities
       puts "\n\nGame over..."
+      sleep 1
+      puts 'The secret code was'
+      p @secret_code
+      puts '...'
+      sleep 1
       if @win_status == 'win'
         puts 'You Win!!!'
         puts "You found the secret code in round #{@current_round - 1}."
@@ -115,15 +116,13 @@ module Mastermind
       end
       temp_guess.each_with_index do |key1, index1|
         temp_code.each_with_index do |key2, index2|
-          if !key1.nil? && (key2 == key1)
-            close += 1
-            temp_code[index2] = nil
-          end
+          next unless !key1.nil? && (key2 == key1)
+
+          close += 1
+          temp_code[index2] = nil
+          break
         end
       end
-      p "temp code: #{temp_code}"
-      p "secret code: #{@secret_code}"
-      p "temp guess: #{temp_guess}"
       ###
       hint = "#{correct} correct, #{close} in the wrong position"
     end
