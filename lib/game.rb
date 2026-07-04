@@ -32,6 +32,8 @@ module Mastermind
         round = Round.new(@code_options, @code_length)
         round.prompt_code_breaker
         check_answer(round.guess)
+        board.save_guess(@current_round, round.guess)
+        display_board(board)
         # ##give hint
         increment_round
       end
@@ -89,6 +91,12 @@ module Mastermind
         puts "You found the secret code in round #{@current_round}."
       else
         puts 'looooser'
+      end
+    end
+
+    def display_board(board)
+      board.guesses.each_with_index do |round, index|
+        puts "Round: #{board.guesses[index][0]}\tGuess: #{board.guesses[index][1]}\tHint: #{board.guesses[index][2]}"
       end
     end
   end
