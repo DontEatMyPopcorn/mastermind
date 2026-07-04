@@ -2,6 +2,9 @@
 
 require_relative 'lib/game'
 require_relative 'lib/board'
+require_relative 'lib/round'
+
+require 'io/console'
 
 # Game Types Enumerated
 GAME_TYPE_1 = 1 # computer (code maker) vs. user (code breaker)

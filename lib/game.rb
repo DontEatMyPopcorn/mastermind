@@ -16,19 +16,22 @@ module Mastermind
 
     def play
       # initialize board
-      board = Board.new(@code_options, @code_length)
       puts 'Ready to play?'
       puts "\n\n"
+      board = Board.new(@code_options, @code_length)
+
       # initialize secret code
       board.secret_code = generate_secret_computer_code(@code_options, @code_length)
 
       # loop for each guessing round
-      puts 'The secrect code is ' + @code_length.to_s + ' keys long.'
-      puts 'Each key is an integer from 1 to ' + @code_options.to_s + '.'
-      puts 'You get up to ' + @max_guesses.to_s + ' guesses.'
-      puts "\n"
+      identify_game_parameters
       until game_over?
+        round = Round.new(@code_options, @code_length)
+        round.prompt_code_breaker
+        # ##play a round
         ### TO DO
+
+        # temp code until I add rounds...
         puts 'enless loop! Do you want out?'
         input = gets.chomp
         @game_status = 'finished' if input.downcase == 'yes'
@@ -36,6 +39,13 @@ module Mastermind
       # end of game formalities
       ### TO DO
       puts 'Game over I guess.'
+    end
+
+    def identify_game_parameters
+      puts "The secrect code is #{@code_length} keys long."
+      puts "Each key is an integer from 1 to #{@code_options}."
+      puts "You get up to #{@max_guesses} guesses."
+      puts "\n"
     end
 
     def game_over?
