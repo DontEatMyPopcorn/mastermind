@@ -114,7 +114,7 @@ module Mastermind
         temp_code[index] = nil
         temp_guess[index] = nil
       end
-      temp_guess.each_with_index do |key1, index1|
+      temp_guess.each_with_index do |key1, _index1|
         temp_code.each_with_index do |key2, index2|
           next unless !key1.nil? && (key2 == key1)
 
@@ -124,7 +124,7 @@ module Mastermind
         end
       end
       ###
-      hint = "#{correct} correct, #{close} in the wrong position"
+      "#{correct} correct, #{close} in the wrong position"
     end
   end
 end
